@@ -17,3 +17,39 @@ Run commands in this order
 	- Pull the top level files
 5. `make init`
 	- Init all files
+
+## Create new project
+
+### Prerequisites
+
+- Project must not exist at the global level
+- Project must not exist at the local level
+
+To create a new project, run: `make create project=[project]`
+
+This will automatically start tracking the project
+
+## Delete project
+
+### Prerequisites
+
+- Project must exist at the local level
+
+To delete a current project, run: `make delete project=[project]`
+
+## Track existing project
+
+### Prerequisites
+
+- Project must exist at the global level
+- Project must NOT exist at the local level
+
+In order to pull and track existing projects, run: `make add project=[project]`
+
+## Stop tracking exising project
+
+### Prerequisites
+
+- Project must exist at the local level
+
+In order to stop tracking an existing project, run: `make remove project=[project]`
