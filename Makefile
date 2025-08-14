@@ -2,8 +2,8 @@
 
 TAG := "Makefile"
 
-LOCAL_PROJECTS := local_projects.yaml
-GLOBAL_PROJECTS := global_projects.yaml
+LOCAL_PROJECTS := .local_projects.yaml
+GLOBAL_PROJECTS := .global_projects.yaml
 TEMPLATE := template
 
 INIT_TAG := "init"
@@ -19,8 +19,9 @@ init:
 			echo "$(TAG) | $(INIT_TAG) | Please install yq manually"; \
 		fi \
 	}
-	@yq e -n '.top_level = ["README.md", "Makefile", "local_projects.yaml"] | .projects = []' > $(LOCAL_PROJECTS)
-	@git sparse-checkout set $$(yq e '.top_level + .projects | .[]' $(LOCAL_PROJECTS))
+	@yq e -n '.projects = []' > $(LOCAL_PROJECTS)
+	@git sparse-checkout set $$(yq e '.projects | .[]' $(LOCAL_PROJECTS))
+	@touch .local_projects.yaml
 	@echo "$(TAG) | $(INIT_TAG) | repo init successfully"
 
 ADD_TAG := "add"
@@ -46,7 +47,7 @@ endif
 	@yq e -i ".projects += ['$(project)']" $(LOCAL_PROJECTS)
 
 	@cp -r $(TEMPLATE) "$(project)"
-	@git sparse-checkout set $$(yq e '.top_level + .projects | .[]' $(LOCAL_PROJECTS))
+	@git sparse-checkout set $$(yq e '.projects | .[]' $(LOCAL_PROJECTS))
 	@echo "$(TAG) | $(ADD_TAG) | Added $(project) successfully"
 
 REMOVE_TAG := "remove"
@@ -61,7 +62,7 @@ endif
 	fi
 
 	@yq e -i "del(.projects[] | select(. == '$(project)'))" $(LOCAL_PROJECTS)
-	@git sparse-checkout set $$(yq e '.top_level + .projects | .[]' $(LOCAL_PROJECTS))
+	@git sparse-checkout set $$(yq e '.projects | .[]' $(LOCAL_PROJECTS))
 	@echo "$(TAG) | $(REMOVE_TAG) | Removed $(project) successfully"
 
 local_projects:
