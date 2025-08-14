@@ -4,7 +4,7 @@ TAG := "Makefile"
 
 LOCAL_PROJECTS := .local_projects.yaml
 GLOBAL_PROJECTS := .global_projects.yaml
-TEMPLATE := template
+TEMPLATE := .template
 
 INIT_TAG := "init"
 init:
